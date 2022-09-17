@@ -1,0 +1,24 @@
+version: '3.0.0'
+services:
+  scheduletask:
+    build: .
+    volumes:
+      - ./data:/go/src/project/data
+    depends_on:
+      - db
+    networks:
+      - lotto_network
+  db:
+    image: mysql:5.7.16
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_DB: lotto
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - lotto_network
+networks:
+  lotto_network:
