@@ -242,17 +242,20 @@ const (
 	MaxIdleConns int    = 10
 )
 
-func getDatabaseConn() {
+func getDatabaseConn() error {
 	addr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True", UserName, Password, Addr, Port, Database)
 
 	conn, err := gorm.Open(mysql.Open(addr), &gorm.Config{})
 	if err != nil {
 		fmt.Println("connection to mysql failed:", err)
+		return err
 	}
 	db, err = conn.DB()
 	if err != nil {
 		fmt.Println("get db failed:", err)
+		return err
 	}
+	return nil
 }
 
 func insertLottoInfo() {
@@ -315,7 +318,11 @@ func insertLottoInfo() {
 }
 func main() {
 
-	getDatabaseConn()
+	err := getDatabaseConn()
+	fmt.Println(err)
+	if err != nil {
+		os.Exit(0)
+	}
 	insertLottoInfo()
 	DiaryTask()
 	db.Close()
