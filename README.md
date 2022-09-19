@@ -8,5 +8,4 @@ docker?
 
 ```shell
 docker-compose build & docker-compose up -d
-docker-compose exec db bash -c "mysql -h localhost -uroot< /code/db.sql"
 ```
